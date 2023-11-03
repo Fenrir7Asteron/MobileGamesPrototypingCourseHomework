@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 97700c16b62a9b9499e1ef74f72459bb
+guid: 2669cc9dff729134b8224fdacf4dc369
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Pixelify Sans
+  - Silkscreen
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
