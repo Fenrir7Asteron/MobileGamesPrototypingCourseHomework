@@ -12,6 +12,7 @@ public class RunnerDemoPathMover : MonoBehaviour {
         public Vector3 m_Position;
         public float m_Duration;
     }
+    [SerializeField] InSceneLevelSwitcher m_LevelSwitcher;
     [SerializeField] Node[] m_Nodes = null;
     [SerializeField] float m_StartFactor = 0.0f;
     [SerializeField] bool m_ResetAfterLastNode = false;
@@ -23,13 +24,13 @@ public class RunnerDemoPathMover : MonoBehaviour {
     void OnEnable()
     {
         m_StartPosition = transform.position;
-        InSceneLevelSwitcher.OnLevelStart += ResetStart;
+        m_LevelSwitcher.OnLevelStart += ResetStart;
         ResetStart();
     }
 
     void OnDisable()
     {
-        InSceneLevelSwitcher.OnLevelStart -= ResetStart;
+        m_LevelSwitcher.OnLevelStart -= ResetStart;
     }
 
     void ResetStart()

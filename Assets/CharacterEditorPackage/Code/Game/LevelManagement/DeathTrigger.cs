@@ -4,6 +4,7 @@ using System.Collections;
 //When the player enters, respawn them
 //--------------------------------------------------------------------
 public class DeathTrigger : MonoBehaviour {
+    [SerializeField] InSceneLevelSwitcher m_LevelSwitcher;
 
     void OnTriggerEnter(Collider a_Collider)
     {
@@ -14,9 +15,9 @@ public class DeathTrigger : MonoBehaviour {
             if (controlledCapsuleCollider.AreCollisionsActive())
             { 
                 Debug.Log("Death triggered by: " + transform.name);
-                if (InSceneLevelSwitcher.Get())
+                if (m_LevelSwitcher != null)
                 {
-                    InSceneLevelSwitcher.Get().Respawn();
+                    m_LevelSwitcher.Respawn();
                 }
             }
         }

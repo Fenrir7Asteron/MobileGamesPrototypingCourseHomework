@@ -1,15 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 //--------------------------------------------------------------------
 //This class spawns particles as long as its ControlledCapsuleCollider is touching a wall
 //--------------------------------------------------------------------
-public class OnWallSlideParticleSpawner : MonoBehaviour {
+public class OnWallSlideParticleSpawner : MonoBehaviourPun {
     [SerializeField] ControlledCapsuleCollider m_Collider = null;
     [SerializeField] float m_Threshold = 0.0f;
     [SerializeField] ParticleSystem m_ParticleSystem = null;
     [SerializeField] int m_EmissionCount = 0;
 	void FixedUpdate () 
 	{
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         CSideCastInfo sideCastInfo = m_Collider.GetSideCastInfo();
         if (sideCastInfo.m_WallCastCount >= 2)
         {

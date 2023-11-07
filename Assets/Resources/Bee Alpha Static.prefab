@@ -23,6 +23,12 @@ GameObject:
   - component: {fileID: 8524216293353448805}
   - component: {fileID: 8524216293353448804}
   - component: {fileID: 8524216293353448827}
+  - component: {fileID: 926367545151963806}
+  - component: {fileID: 1332626795473364294}
+  - component: {fileID: 2801620822463250036}
+  - component: {fileID: 4601792787301885347}
+  - component: {fileID: 5261613617052783934}
+  - component: {fileID: 6282951413996260801}
   m_Layer: 0
   m_Name: Bee Alpha Static
   m_TagString: Untagged
@@ -38,7 +44,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8524216293353448814}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 14.1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -68,7 +74,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5b00a7de0ddb01248a3ad80a9c634599, type: 2}
+  - {fileID: 2100000, guid: 903f64f344ba419488d61b95be7f5922, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1678,6 +1684,8 @@ MonoBehaviour:
   alphaOffset: {x: -0.6142094, y: -0.51364475}
   alphaScale: {x: 1.2279774, y: 0.98778313}
   alphaSharpness: 4
+  useReplicatedGameObject: 1
+  replicatedPrefab: {fileID: 11400000, guid: 82b99723f705d8b41823d72017277d12, type: 2}
   shape: {fileID: 21300000, guid: a4f3e6a9ab63db445a0633c2e8aee5f0, type: 3}
   overrideTexture: {fileID: 0}
   solidRangeMask: {fileID: 0}
@@ -1685,7 +1693,7 @@ MonoBehaviour:
   cropSprite: 0
   rebuildInGame: 0
   rebuildOptimizeCount: 0
-  originalSprite: {fileID: 21300000, guid: 289f7f4484d558d4c93c19c5b4029220, type: 3}
+  originalSprite: {fileID: 0}
   clonedSprite: {fileID: 0}
 --- !u!114 &8524216293353448800
 MonoBehaviour:
@@ -1931,18 +1939,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: AbilityModuleManager, Assembly-CSharp
-        m_MethodName: InitAllModules
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: CharacterControllerBase, Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   met: 0
 --- !u!114 &6246484667027987542
 MonoBehaviour:
@@ -2081,9 +2077,9 @@ MonoBehaviour:
   onImpact:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InSceneLevelSwitcher, Assembly-CSharp
-        m_MethodName: Respawn
+      - m_Target: {fileID: 926367545151963806}
+        m_TargetAssemblyTypeName: SliceEmAll.Gameplay.Enemy.Enemy, Assembly-CSharp
+        m_MethodName: RespawnPlayer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2106,6 +2102,101 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab3c1fd85e053f64ab748a5f998a9f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &926367545151963806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524216293353448814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 743a64133b6064247827bcac0c6f1839, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1332626795473364294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524216293353448814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09050c8a6cefcde4d82049d55ba60129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2801620822463250036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524216293353448814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 1
+  m_UseLocal: 1
+--- !u!114 &4601792787301885347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524216293353448814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 0
+  m_TeleportEnabled: 1
+  m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &5261613617052783934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524216293353448814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 2801620822463250036}
+  - {fileID: 4601792787301885347}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &6282951413996260801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524216293353448814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9482537559120e42aee7b884629f074, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 8524216293353448806}
+  _localPlayerColor: {r: 1, g: 1, b: 1, a: 1}
+  _networkPlayerColor: {r: 0.2, g: 0.2, b: 0.2, a: 0.5019608}
 --- !u!1 &8524216293383432987
 GameObject:
   m_ObjectHideFlags: 0

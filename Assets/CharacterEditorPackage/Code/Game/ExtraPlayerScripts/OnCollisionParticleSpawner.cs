@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 //--------------------------------------------------------------------
 //Spawns particles when a character hits a surface with enough velocity
 //--------------------------------------------------------------------
-public class OnCollisionParticleSpawner : MonoBehaviour {
+public class OnCollisionParticleSpawner : MonoBehaviourPun {
     [SerializeField] ControlledCapsuleCollider m_Collider = null;
     [SerializeField] float m_Threshold = 0.0f;
     [SerializeField] ParticleSystem m_ParticleSystem = null;
     [SerializeField] int m_EmissionCount = 0;
 	void FixedUpdate () 
 	{
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         List<CapsuleCollisionOccurrance> cols = m_Collider.GetCollisionInfo();
         for (int i = 0; i < cols.Count; i ++)
         {       

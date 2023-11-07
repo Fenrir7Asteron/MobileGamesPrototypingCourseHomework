@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 //--------------------------------------------------------------------
 //Spawns particles when the character is moving across the floor
 //--------------------------------------------------------------------
-public class OnRunParticleSpawner : MonoBehaviour {
+public class OnRunParticleSpawner : MonoBehaviourPun {
     [SerializeField] ControlledCapsuleCollider m_Collider = null;
     [SerializeField] float m_LowThreshold = 0.0f;
     [SerializeField] float m_HighThreshold = 0.0f;
@@ -12,6 +13,11 @@ public class OnRunParticleSpawner : MonoBehaviour {
     [SerializeField] int m_HighEmissionCount = 0;
 	void FixedUpdate () 
 	{
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (m_Collider.IsGrounded())
         {
             CGroundedInfo groundedInfo = m_Collider.GetGroundedInfo();

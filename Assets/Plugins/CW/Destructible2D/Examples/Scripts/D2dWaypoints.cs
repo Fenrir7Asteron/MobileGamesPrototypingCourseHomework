@@ -33,7 +33,7 @@ namespace Destructible2D.Examples
 		[System.NonSerialized]
 		private Rigidbody2D body;
 
-		protected virtual void Awake()
+		protected virtual void Start()
 		{
 			ChangeTargetPoint();
         }

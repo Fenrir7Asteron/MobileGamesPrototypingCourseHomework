@@ -6,6 +6,7 @@ using System.Collections.Generic;
 //Use a trigger in combination with Physics.ignorecollision to make the platform intangible.
 
 public class OneWayPlatform : MonoBehaviour {
+    [SerializeField] InSceneLevelSwitcher m_LevelSwitcher;
     [SerializeField] Collider m_PlatformCollider = null;
 
     List<Collider> m_IgnoredColliders = new List<Collider>();
@@ -22,12 +23,12 @@ public class OneWayPlatform : MonoBehaviour {
 
     void OnEnable()
     {
-        InSceneLevelSwitcher.OnLevelStart += ResetStart;
+        m_LevelSwitcher.OnLevelStart += ResetStart;
     }
 
     void OnDisable()
     {
-        InSceneLevelSwitcher.OnLevelStart -= ResetStart;
+        m_LevelSwitcher.OnLevelStart -= ResetStart;
     }
 
     void ResetStart()

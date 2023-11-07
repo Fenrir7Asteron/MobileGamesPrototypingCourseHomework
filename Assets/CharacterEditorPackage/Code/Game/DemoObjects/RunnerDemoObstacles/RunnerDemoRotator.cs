@@ -6,18 +6,19 @@ using System.Collections;
 //--------------------------------------------------------------------
 public class RunnerDemoRotator : Rotator
 {
+    [SerializeField] InSceneLevelSwitcher m_LevelSwitcher;
     Quaternion m_StartRotation;
 
     void OnEnable()
     {
         m_StartRotation = transform.rotation;
-        InSceneLevelSwitcher.OnLevelStart += ResetStart;
+        m_LevelSwitcher.OnLevelStart += ResetStart;
     }
 
 
     void OnDisable()
     {
-        InSceneLevelSwitcher.OnLevelStart -= ResetStart;
+        m_LevelSwitcher.OnLevelStart -= ResetStart;
     }
 
     void ResetStart()

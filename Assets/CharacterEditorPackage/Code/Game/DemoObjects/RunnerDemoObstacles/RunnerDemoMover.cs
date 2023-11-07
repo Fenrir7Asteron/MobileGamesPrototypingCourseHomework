@@ -6,18 +6,19 @@ using System.Collections;
 //--------------------------------------------------------------------
 public class RunnerDemoMover: Mover
 {
+    [SerializeField] InSceneLevelSwitcher m_LevelSwitcher;
     [SerializeField] float m_StartTime = 0.0f;
 
     void OnEnable()
     {
         m_Time = m_StartTime;
         m_StartPosition = transform.position;
-        InSceneLevelSwitcher.OnLevelStart += ResetStart;
+        m_LevelSwitcher.OnLevelStart += ResetStart;
     }
 
     void OnDisable()
     {
-        InSceneLevelSwitcher.OnLevelStart -= ResetStart;
+        m_LevelSwitcher.OnLevelStart -= ResetStart;
     }
 
     void ResetStart()

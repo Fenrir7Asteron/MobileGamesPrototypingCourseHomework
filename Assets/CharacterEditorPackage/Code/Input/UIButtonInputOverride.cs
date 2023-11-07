@@ -13,4 +13,8 @@ public class UIButtonInputOverride : MonoBehaviour {
     {
         m_PlayerInput.GetButton(m_InputOverrideName).SetOverride(true, false);
     }
+    public void SetPlayerInput(PlayerInput playerInput)
+    {
+        m_PlayerInput = playerInput;
+    }
 }

@@ -1,22 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 //--------------------------------------------------------------------
 //This class registers to an CharacterControllerBase's OnJump event and spawns particles when a jump occurs
 //--------------------------------------------------------------------
-public class OnJumpParticleSpawner : MonoBehaviour {
+public class OnJumpParticleSpawner : MonoBehaviourPun {
     [SerializeField] GroundedCharacterController m_CharacterController = null;
     [SerializeField] ControlledCapsuleCollider m_Collider = null;
     [SerializeField] ParticleSystem m_ParticleSystem = null;
     [SerializeField] int m_EmissionCount = 0;
     void OnEnable()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         m_CharacterController.OnJump += SpawnParticles;
     }
 
 
     void OnDisable()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         m_CharacterController.OnJump -= SpawnParticles;
     }
 

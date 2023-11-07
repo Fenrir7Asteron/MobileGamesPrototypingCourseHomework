@@ -5,12 +5,18 @@ using System.Collections;
 //--------------------------------------------------------------------
 public class RespawnPointSetter : MonoBehaviour {
     [SerializeField] int m_Index = 0;
+    private InSceneLevelSwitcher m_LevelSwitcher;
+
+    public void Start()
+    {
+        m_LevelSwitcher = FindObjectOfType<InSceneLevelSwitcher>();
+    }
 
     void OnTriggerEnter()
     {
-        if (InSceneLevelSwitcher.Get())
+        if (m_LevelSwitcher != null)
         {
-            InSceneLevelSwitcher.Get().SetIndex(m_Index);
+            m_LevelSwitcher.SetIndex(m_Index);
         }
     }
 }

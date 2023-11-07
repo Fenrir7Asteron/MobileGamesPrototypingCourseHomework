@@ -1,7 +1,10 @@
 {
     "name": "Destructible2D",
+    "rootNamespace": "",
     "references": [
-        "CW.Common"
+        "CW.Common",
+        "PhotonUnityNetworking",
+        "GameObjectSO"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

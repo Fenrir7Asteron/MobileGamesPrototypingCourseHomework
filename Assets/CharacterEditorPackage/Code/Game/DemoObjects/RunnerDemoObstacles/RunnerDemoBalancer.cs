@@ -6,17 +6,18 @@ using System.Collections;
 //--------------------------------------------------------------------
 public class RunnerDemoBalancer: Balancer
 {
+    [SerializeField] InSceneLevelSwitcher m_LevelSwitcher;
     [SerializeField] float m_StartTime = 0.0f;
 
     void OnEnable()
     {
         m_Time = m_StartTime;
-        InSceneLevelSwitcher.OnLevelStart += ResetStart;
+        m_LevelSwitcher.OnLevelStart += ResetStart;
     }
 
     void OnDisable()
     {
-        InSceneLevelSwitcher.OnLevelStart -= ResetStart;
+        m_LevelSwitcher.OnLevelStart -= ResetStart;
     }
 
     void ResetStart()

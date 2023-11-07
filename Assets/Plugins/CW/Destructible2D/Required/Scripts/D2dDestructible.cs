@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using CW.Common;
+using Photon.Pun;
+using SliceEmAll.Data.GameObjectSO;
 
 namespace Destructible2D
 {
@@ -493,7 +495,15 @@ namespace Destructible2D
 			}
 			else
 			{
-				splitDestructible = Instantiate(this, transform.localPosition, transform.localRotation);
+				if (useReplicatedGameObject)
+				{
+					splitDestructible = PhotonNetwork.Instantiate(replicatedPrefab.gameObjectRef.name, transform.localPosition,
+						transform.localRotation).GetComponent<D2dDestructible>();
+				}
+				else
+				{
+					splitDestructible = Instantiate(this, transform.localPosition, transform.localRotation);
+				}
 
 				splitDestructible.transform.SetParent(transform.parent, false);
 			}
@@ -658,8 +668,11 @@ namespace Destructible2D
 		}
 
 		private static List<Material> tempMaterials = new List<Material>();
+        public bool useReplicatedGameObject;
+        public GameObjectSO replicatedPrefab;
 
-		protected virtual void OnWillRenderObject(Renderer renderer)
+
+        protected virtual void OnWillRenderObject(Renderer renderer)
 		{
 			if (ready == true)
 			{
@@ -733,7 +746,8 @@ namespace Destructible2D
 namespace Destructible2D.Inspector
 {
 	using UnityEditor;
-	using TARGET = D2dDestructible;
+    using UnityEditor.SceneManagement;
+    using TARGET = D2dDestructible;
 
 	[CanEditMultipleObjects]
 	public class D2dDestructible_Editor : CwEditor
@@ -831,6 +845,15 @@ namespace Destructible2D.Inspector
 			if (rebuild == true)
 			{
 				Each(tgts, t => t.RebuildAlphaTex(), true);
+			}
+
+			tgt.useReplicatedGameObject = EditorGUILayout.Toggle("Use Replicated GameObject", tgt.useReplicatedGameObject);
+			tgt.replicatedPrefab = (GameObjectSO) EditorGUILayout.ObjectField(tgt.replicatedPrefab, typeof(GameObjectSO), false);
+
+			if (GUI.changed)
+			{
+				EditorUtility.SetDirty(tgt);
+				EditorSceneManager.MarkSceneDirty(tgt.gameObject.scene);
 			}
 		}
 	}

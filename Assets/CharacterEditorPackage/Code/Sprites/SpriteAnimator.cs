@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Photon.Pun;
+using System;
+using Photon.Realtime;
 
 [System.Serializable]
 public class AnimationOffset
@@ -13,13 +16,16 @@ public class AnimationOffset
 //It has additional settings for offsets and rotations
 //The SpriteAnimator also interpolates sprite position for smooth movement because Unity's Update and FixedUpdate are not synched.
 //--------------------------------------------------------------------
-public class SpriteAnimator : MonoBehaviour {
+public class SpriteAnimator : MonoBehaviourPunCallbacks {
     public enum SpriteInterpolation
     {
         None,
         Interpolate,
         Extrapolate
     }
+
+    private const string CurrentAnimationNameKey = "CurrentAnimationName";
+
     [SerializeField] Animator m_SpriteAnimator = null;
     [SerializeField] AnimationOffset[] m_AnimOffsets = null;
     [SerializeField] string m_Prefix = "";
@@ -42,18 +48,29 @@ public class SpriteAnimator : MonoBehaviour {
     float m_LastZRot;
     float m_StartHeight;
 
+    private ExitGames.Client.Photon.Hashtable _myCustomProperties = new ExitGames.Client.Photon.Hashtable();
+
     void Start()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         //Make sure that we start at the right height, and that the parent is aligned to the lower demisphere
         //Prevents having to manually adjust both sprite and parent
         Vector3 originalPosition = transform.position;
         m_SpriteTransformHook.transform.position = m_CapsuleCollider.GetDownCenter();
         transform.position = originalPosition;
         m_StartHeight = transform.localPosition.y;
-
     }
     void FixedUpdate()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         m_LastFixedUpdatePosition = m_CurrentFixedUpdatePosition;
         m_CurrentFixedUpdatePosition = m_CapsuleCollider.GetCapsuleTransform().GetPosition();
 
@@ -67,6 +84,11 @@ public class SpriteAnimator : MonoBehaviour {
 	
 	void Update () 
 	{
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (m_CharacterController == null || m_CharacterController.GetCollider() == null)
         {
             Debug.LogError("Sprite animator can't find properly set-up character");
@@ -145,7 +167,18 @@ public class SpriteAnimator : MonoBehaviour {
         //Animations themselves might adjust position via localposition
         Vector3 heightAdjustment = m_CapsuleCollider.GetUpDirection() * (-m_CapsuleCollider.GetLength()*0.5f);
         m_SpriteTransformHook.transform.position = startPosition + heightAdjustment;
-        StartAnimation(m_CharacterController.GetCurrentSpriteState());
+
+        string a_Name = m_CharacterController.GetCurrentSpriteState();
+
+        if (m_CurrentAnimationName == a_Name)
+        {
+            return;
+        }
+
+        _myCustomProperties[CurrentAnimationNameKey] = a_Name;
+        photonView.Owner.SetCustomProperties(_myCustomProperties);
+
+        StartAnimation(a_Name);
     }
 
     Vector3 GetInterpolatedPosition()
@@ -175,7 +208,7 @@ public class SpriteAnimator : MonoBehaviour {
         {
             return;
         }
-
+        
         if (m_SpriteAnimator != null)
         {
             if (m_SpriteAnimator.HasState(0, Animator.StringToHash(m_Prefix + a_Name)))
@@ -207,5 +240,22 @@ public class SpriteAnimator : MonoBehaviour {
             }
         }
         transform.localPosition = localPos;
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, ExitGames.Client.Photon.Hashtable changedProps)
+    {
+        // No need to process own animations here. They are processed in Update().
+        if (photonView.IsMine)
+        {
+            return;
+        }
+
+        base.OnPlayerPropertiesUpdate(targetPlayer, changedProps);
+        if (targetPlayer == photonView.Owner && targetPlayer.CustomProperties.ContainsKey(CurrentAnimationNameKey))
+        {
+            string a_Name = (String) targetPlayer.CustomProperties[CurrentAnimationNameKey];
+            Debug.Log($"Network player anim: {a_Name}");
+            StartAnimation(a_Name);
+        }
     }
 }

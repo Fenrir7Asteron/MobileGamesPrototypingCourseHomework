@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 //--------------------------------------------------------------------
 //InSceneLevelSwitcher keeps track of spawnpoints and respawning
@@ -8,32 +9,27 @@ using System.Collections;
 public class InSceneLevelSwitcher : MonoBehaviour {
     //Level start event (for other scripts to use when the level is changed)
     public delegate void OnLevelStartEvent();
-    public static event OnLevelStartEvent OnLevelStart;
-    [SerializeField] CharacterControllerBase m_Character = null;
+    public event OnLevelStartEvent OnLevelStart;
+    [SerializeField] SliceEmAll.Networking.GameLobbyManager _lobbyManager = null;
     [SerializeField] InSceneLevel[] m_Levels = null;
     [SerializeField] int m_ButtonSize = 0;
     [SerializeField] int m_ButtonsPerRow = 0;
     [SerializeField] Transform m_Camera = null;
     int m_CurrentIndex;
-    
-    static InSceneLevelSwitcher g_InSceneLevelSwitcher;
-    public static InSceneLevelSwitcher Get()
+    private CharacterControllerBase m_Character = null;
+
+    public void Awake()
     {
-        if (g_InSceneLevelSwitcher == null)
+        if (_lobbyManager != null)
         {
-            g_InSceneLevelSwitcher = FindObjectOfType<InSceneLevelSwitcher>();
-            if (g_InSceneLevelSwitcher == null)
+            _lobbyManager.PlayerSpawned += (GameObject x) => 
             {
-                return null;
-            }
+                SetPlayer(x.GetComponent<CharacterControllerBase>());
+                StartLevel(0);
+                CorrectCamera();
+            };   
         }
-        return g_InSceneLevelSwitcher;
     }
-	void Start () 
-	{
-		StartLevel(0);
-        CorrectCamera();
-	}
 
     void OnGUI()
     {
@@ -89,5 +85,10 @@ public class InSceneLevelSwitcher : MonoBehaviour {
         {
             OnLevelStart();
         }    
+    }
+
+    public void SetPlayer(CharacterControllerBase playerObject)
+    {
+        m_Character = playerObject;
     }
 }

@@ -26,4 +26,8 @@ public class UIDirectionInputOverride : MonoBehaviour {
 		m_CurrentInput.x -= 1.0f;
 		m_PlayerInput.GetDirectionInput(m_InputOverrideName).SetOverride(true, m_CurrentInput);
 	}
+	public void SetPlayerInput(PlayerInput playerInput)
+    {
+        m_PlayerInput = playerInput;
+    }
 }

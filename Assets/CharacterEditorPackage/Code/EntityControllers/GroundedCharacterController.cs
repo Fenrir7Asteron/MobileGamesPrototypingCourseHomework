@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Photon.Pun;
 //--------------------------------------------------------------------
 //GroundedCharacterController is an CharacterControllerBase which implements the core of a platforming character.
 //It is the CharacterControllerBase used for all the character controllers
@@ -74,6 +75,11 @@ public class GroundedCharacterController : CharacterControllerBase
     //Jump input is cached to allow for tolerances (jumping being recognized as valid just before/after touching a jumpable surface
     protected override void UpdateController()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+        
         bool isGrounded = m_ControlledCollider.IsGrounded();
         if (isGrounded)
         {
@@ -109,6 +115,11 @@ public class GroundedCharacterController : CharacterControllerBase
     //Combines input and other forces to update the velocity, then moves the collider using that velocity
     protected override void DefaultUpdateMovement()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         //Jump cut can also be honored by other movement modules, but that is their decision
         UpdateJumpCut();
 
@@ -142,6 +153,11 @@ public class GroundedCharacterController : CharacterControllerBase
     //Default jump using this controller's jump values.
     public bool TryDefaultJump()
     {
+        if (!photonView.IsMine)
+        {
+            return false;
+        }
+
         if (m_JumpInputIsCached)
         {
             //Character was grounded or is grounded; jump occurs
@@ -168,6 +184,11 @@ public class GroundedCharacterController : CharacterControllerBase
     //See if jump height has to be cut short when the jump button is released
     public void UpdateJumpCut()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         Vector2 currentVel = m_ControlledCollider.GetVelocity();
         //When below jump cut velocity, disable jump cuts.
         if (currentVel.y <= m_JumpCutVelocity && m_ControlledCollider.GetPreviousVelocity().y > m_JumpCutVelocity)
@@ -187,11 +208,21 @@ public class GroundedCharacterController : CharacterControllerBase
     }
     public void StopJumpCut()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         m_JumpCutPossible = false;
     }
 
     public void Jump(Vector2 a_Velocity, bool a_OverridePreviousVelocity = true, bool a_AllowLowJumps = true, bool a_ConsumeJumpInput = true)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (a_AllowLowJumps)
         {
             m_JumpCutPossible = true;
@@ -210,6 +241,11 @@ public class GroundedCharacterController : CharacterControllerBase
     
     public void LaunchCharacter(Vector2 a_LaunchVelocity, bool a_OverridePreviousVelocity = true)
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         Vector2 newVelocity = m_ControlledCollider.GetVelocity();
         if (a_OverridePreviousVelocity)
         {
@@ -221,6 +257,11 @@ public class GroundedCharacterController : CharacterControllerBase
 
     public void TryAligningWithGround()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         if (m_AlignRotationToGroundedNormal)
         {
             if (m_ControlledCollider.IsGrounded())
