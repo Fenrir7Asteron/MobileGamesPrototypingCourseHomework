@@ -24,11 +24,9 @@ GameObject:
   - component: {fileID: 8524216293353448804}
   - component: {fileID: 8524216293353448827}
   - component: {fileID: 926367545151963806}
-  - component: {fileID: 1332626795473364294}
   - component: {fileID: 2801620822463250036}
   - component: {fileID: 4601792787301885347}
   - component: {fileID: 5261613617052783934}
-  - component: {fileID: 6282951413996260801}
   m_Layer: 0
   m_Name: Bee Alpha Static
   m_TagString: Untagged
@@ -2114,18 +2112,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 743a64133b6064247827bcac0c6f1839, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1332626795473364294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8524216293353448814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09050c8a6cefcde4d82049d55ba60129, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2801620822463250036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2182,21 +2168,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &6282951413996260801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8524216293353448814}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9482537559120e42aee7b884629f074, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spriteRenderer: {fileID: 8524216293353448806}
-  _localPlayerColor: {r: 1, g: 1, b: 1, a: 1}
-  _networkPlayerColor: {r: 0.2, g: 0.2, b: 0.2, a: 0.5019608}
 --- !u!1 &8524216293383432987
 GameObject:
   m_ObjectHideFlags: 0

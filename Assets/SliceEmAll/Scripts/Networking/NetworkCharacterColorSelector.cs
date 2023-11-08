@@ -1,3 +1,4 @@
+using System.Linq;
 using Photon.Pun;
 using UnityEngine;
 
@@ -6,12 +7,15 @@ namespace SliceEmAll.Gameplay.Networking
     public class NetworkCharacterColorSelector : MonoBehaviourPun
     {
         [SerializeField] private SpriteRenderer _spriteRenderer;
-        [SerializeField] private Color _localPlayerColor;
-        [SerializeField] private Color _networkPlayerColor;
+        [SerializeField] private Color[] _colors;
 
         public void Awake()
         {
-            _spriteRenderer.color = photonView.IsMine ? _localPlayerColor : _networkPlayerColor;
+            if (_colors.Count() > photonView.ViewID - 1)
+            {
+                _spriteRenderer.color = _colors[photonView.ViewID - 1];
+            }
+
             _spriteRenderer.sortingOrder = photonView.IsMine ? 0 : 1;
         }
     }

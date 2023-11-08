@@ -1,4 +1,5 @@
 using System;
+using Destructible2D.Examples;
 using UnityEngine;
 
 namespace SliceEmAll.Networking
@@ -11,7 +12,7 @@ namespace SliceEmAll.Networking
         [SerializeField] private Gameplay.Player.PlayerSpawner _playerSpawner;
 
         [Header("UI")]
-        [SerializeField] private Canvas _lobbyHudCanvas;
+        [SerializeField] private GameObject _joinButton;
         [SerializeField] private GameObject _gameplayHudPrefab;
         [SerializeField] private Transform _uiRoot;
 
@@ -31,25 +32,26 @@ namespace SliceEmAll.Networking
 
             PlayerSpawned?.Invoke(playerObject);
 
-            //_lobbyHudCanvas.enabled = false;
+            _joinButton.SetActive(false);
 
-            SpawnGameplayHud(playerObject);
+            PlayerInput playerInput = playerObject.GetComponent<PlayerInput>();
+            playerObject.GetComponent<D2dSpaceshipJumper>().SetPlayerInput(playerInput);
+
+            SpawnGameplayHud(playerInput);
         }
 
-        private void SpawnGameplayHud(GameObject playerObject)
+        private void SpawnGameplayHud(PlayerInput playerInput)
         {
             GameObject gameplayHudObject = Instantiate(_gameplayHudPrefab, _uiRoot);
 
-            PlayerInput playerInput = playerObject.GetComponent<PlayerInput>();
-
-            UIButtonInputOverride uiInput = gameplayHudObject.GetComponentInChildren<UIButtonInputOverride>();
-            if (uiInput != null)
+            UIButtonInputOverride[] uiInputs = gameplayHudObject.GetComponentsInChildren<UIButtonInputOverride>();
+            foreach (UIButtonInputOverride uiInput in uiInputs)
             {
                 uiInput.SetPlayerInput(playerInput);
             }
-
-            UIDirectionInputOverride uiDirection = gameplayHudObject.GetComponentInChildren<UIDirectionInputOverride>();
-            if (uiDirection != null)
+            
+            UIDirectionInputOverride[] uiDirections = gameplayHudObject.GetComponentsInChildren<UIDirectionInputOverride>();
+            foreach (UIDirectionInputOverride uiDirection in uiDirections)
             {
                 uiDirection.SetPlayerInput(playerInput);
             }

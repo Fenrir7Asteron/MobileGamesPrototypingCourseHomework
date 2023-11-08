@@ -1,11 +1,10 @@
 using Destructible2D.Examples;
 using Photon.Pun;
-using SliceEmAll.Gameplay.Spawn;
 using UnityEngine;
 
 namespace SliceEmAll.Gameplay.Enemy
 {
-    public class EnemySpawner : MonoBehaviour
+    public class EnemySpawner : MonoBehaviourPun
     {
         [SerializeField] private GameObject _enemyPrefab;
         [SerializeField] private InSceneLevelSwitcher _levelSwitcher;
@@ -16,13 +15,15 @@ namespace SliceEmAll.Gameplay.Enemy
             _levelSwitcher.OnLevelStart += Spawn;
         }
 
-        public void OnDisable()
-        {
-            _levelSwitcher.OnLevelStart -= Spawn;
-        }
-
         private void Spawn()
         {
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                return;
+            }
+
+            _levelSwitcher.OnLevelStart -= Spawn;
+
             GameObject enemyObject = SpawnEnemy();
             enemyObject.GetComponent<Enemy>().SetLevelSwitcher(_levelSwitcher);
 

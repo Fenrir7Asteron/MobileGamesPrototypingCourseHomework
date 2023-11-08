@@ -1,5 +1,6 @@
 using UnityEngine;
 using CW.Common;
+using Photon.Pun;
 
 namespace Destructible2D.Examples
 {
@@ -7,7 +8,7 @@ namespace Destructible2D.Examples
 	[RequireComponent(typeof(Rigidbody2D))]
 	[HelpURL(D2dCommon.HelpUrlPrefix + "D2dSpaceshipJumper")]
 	[AddComponentMenu(D2dCommon.ComponentMenuPrefix + "Spaceship Jumper")]
-	public class D2dSpaceshipJumper : MonoBehaviour
+	public class D2dSpaceshipJumper : MonoBehaviourPun
 	{
 		/// <summary>The controls used to turn left and right.</summary>
 		public CwInputManager.Axis TurnControls = new CwInputManager.Axis(1, false, CwInputManager.AxisGesture.HorizontalPull, 0.01f, KeyCode.A, KeyCode.D, KeyCode.LeftArrow, KeyCode.RightArrow, 1.0f);
@@ -38,16 +39,35 @@ namespace Destructible2D.Examples
 
 		// Seconds until next shot is available
 		private float cooldown;
+        private ButtonInput m_JumpInput;
+
+        public void SetPlayerInput(PlayerInput a_PlayerInput)
+		{
+			if (a_PlayerInput.GetButton("TeleportJump") != null)
+			{ 
+				m_JumpInput = a_PlayerInput.GetButton("TeleportJump");
+			}
+			else
+			{
+				Debug.LogError("Teleport jump input not set up in character input");
+			}
+		}
 
 		protected virtual void OnEnable()
 		{
 			CwInputManager.EnsureThisComponentExists();
 
 			if (cachedRigidbody2D == null) cachedRigidbody2D = GetComponent<Rigidbody2D>();
+
 		}
 
 		protected virtual void Update()
 		{
+			if (!photonView.IsMine)
+			{
+				return;
+			}
+
 			cooldown -= Time.deltaTime;
 
 			// Set thrusters based on finger drag
@@ -72,22 +92,30 @@ namespace Destructible2D.Examples
 			cachedRigidbody2D.AddTorque(targetSteer * -TurnTorque);
 
 			// Jump the spaceship forward?
-			foreach (var finger in CwInputManager.GetFingers(true))
-			{
-				if (JumpControls.WentDown(finger) == true)
-				{
-					if (cooldown <= 0.0f)
-					{
-						cooldown = JumpDelay;
+			// foreach (var finger in CwInputManager.GetFingers(true))
+			// {
+			// 	if (JumpControls.WentDown(finger) == true)
+			// 	{
+			// 		DoJump();
+			// 	}
+			// }
 
-						DoJump();
-					}
-				}
+			if (m_JumpInput.m_WasJustPressed)
+			{
+				m_JumpInput.m_WasJustPressed = false;
+				DoJump();
 			}
 		}
 
 		private void DoJump()
 		{
+			if (cooldown > 0.0f)
+			{
+				return;
+			}
+
+			cooldown = JumpDelay;
+
 			var oldPosition = transform.position;
 
 			transform.Translate(0.0f, JumpDistance, 0.0f, Space.Self);

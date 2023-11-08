@@ -17,6 +17,7 @@ public class InSceneLevelSwitcher : MonoBehaviour {
     [SerializeField] Transform m_Camera = null;
     int m_CurrentIndex;
     private CharacterControllerBase m_Character = null;
+    private ButtonInput m_RespawnInput;
 
     public void Awake()
     {
@@ -51,8 +52,9 @@ public class InSceneLevelSwitcher : MonoBehaviour {
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (m_RespawnInput != null && m_RespawnInput.m_WasJustPressed)
         {
+            m_RespawnInput.m_WasJustPressed = false;
             Respawn();
         }
     }
@@ -90,5 +92,15 @@ public class InSceneLevelSwitcher : MonoBehaviour {
     public void SetPlayer(CharacterControllerBase playerObject)
     {
         m_Character = playerObject;
+
+        PlayerInput playerInput = playerObject.GetPlayerInput();
+        if (playerInput.GetButton("Respawn") != null)
+        { 
+            m_RespawnInput = playerInput.GetButton("Respawn");
+        }
+        else
+        {
+            Debug.LogError("Respawn input not set up in character input");
+        }
     }
 }
