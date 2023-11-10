@@ -30,6 +30,8 @@ namespace Photon.Realtime
         private const int SizeV2 = 2 * 4;
         private const int SizeV3 = 3 * 4;
         private const int SizeQuat = 4 * 4;
+        private const int SizeColor = 4 * 4;
+        private const int SizeMatrix4x4 = 4 * 4 * 4;
 
 
         /// <summary>Register de/serializer methods for Unity specific types. Makes the types usable in RaiseEvent and PUN.</summary>
@@ -38,6 +40,8 @@ namespace Photon.Realtime
             PhotonPeer.RegisterType(typeof(Vector2), (byte) 'W', SerializeVector2, DeserializeVector2);
             PhotonPeer.RegisterType(typeof(Vector3), (byte) 'V', SerializeVector3, DeserializeVector3);
             PhotonPeer.RegisterType(typeof(Quaternion), (byte) 'Q', SerializeQuaternion, DeserializeQuaternion);
+            PhotonPeer.RegisterType(typeof(Color32), (byte) 'C', SerializeColor, DeserializeColor);
+            PhotonPeer.RegisterType(typeof(Matrix4x4), (byte) 'M', SerializeMatrix4x4, DeserializeMatrix4x4);
         }
 
 
@@ -137,7 +141,7 @@ namespace Photon.Realtime
                 outStream.Write(bytes, 0, SizeQuat);
             }
 
-            return 4 * 4;
+            return SizeQuat;
         }
 
         private static object DeserializeQuaternion(StreamBuffer inStream, short length)
@@ -156,6 +160,119 @@ namespace Photon.Realtime
                 Protocol.Deserialize(out o.x, memQuarternion, ref index);
                 Protocol.Deserialize(out o.y, memQuarternion, ref index);
                 Protocol.Deserialize(out o.z, memQuarternion, ref index);
+            }
+
+            return o;
+        }
+
+        public static readonly byte[] memColor = new byte[SizeColor];
+
+        private static short SerializeColor(StreamBuffer outStream, object customobject)
+        {
+            Color32 o = (Color32) customobject;
+
+            lock (memColor)
+            {
+                byte[] bytes = memColor;
+                int index = 0;
+                Protocol.Serialize(o.r, bytes, ref index);
+                Protocol.Serialize(o.g, bytes, ref index);
+                Protocol.Serialize(o.b, bytes, ref index);
+                Protocol.Serialize(o.a, bytes, ref index);
+                outStream.Write(bytes, 0, SizeColor);
+            }
+
+            return SizeColor;
+        }
+
+        private static object DeserializeColor(StreamBuffer inStream, short length)
+        {
+            Color32 o = Color.white;
+            if (length != SizeColor)
+            {
+                return o;
+            }
+
+            lock (memColor)
+            {
+                inStream.Read(memColor, 0, SizeColor);
+                int index = 0;
+                o.r = memColor[index++];
+                o.g = memColor[index++];
+                o.b = memColor[index++];
+                o.a = memColor[index++];
+            }
+
+            return o;
+        }
+
+
+        public static readonly byte[] memMatrix4x4 = new byte[SizeMatrix4x4];
+
+        private static short SerializeMatrix4x4(StreamBuffer outStream, object customobject)
+        {
+            Matrix4x4 o = (Matrix4x4) customobject;
+
+            lock (memMatrix4x4)
+            {
+                byte[] bytes = memMatrix4x4;
+                int index = 0;
+                Protocol.Serialize(o.m00, bytes, ref index);
+                Protocol.Serialize(o.m01, bytes, ref index);
+                Protocol.Serialize(o.m02, bytes, ref index);
+                Protocol.Serialize(o.m03, bytes, ref index);
+
+                Protocol.Serialize(o.m10, bytes, ref index);
+                Protocol.Serialize(o.m11, bytes, ref index);
+                Protocol.Serialize(o.m12, bytes, ref index);
+                Protocol.Serialize(o.m13, bytes, ref index);
+
+                Protocol.Serialize(o.m20, bytes, ref index);
+                Protocol.Serialize(o.m21, bytes, ref index);
+                Protocol.Serialize(o.m22, bytes, ref index);
+                Protocol.Serialize(o.m23, bytes, ref index);
+
+                Protocol.Serialize(o.m30, bytes, ref index);
+                Protocol.Serialize(o.m31, bytes, ref index);
+                Protocol.Serialize(o.m32, bytes, ref index);
+                Protocol.Serialize(o.m33, bytes, ref index);
+                outStream.Write(bytes, 0, SizeMatrix4x4);
+            }
+
+            return 4 * 4;
+        }
+
+        private static object DeserializeMatrix4x4(StreamBuffer inStream, short length)
+        {
+            Matrix4x4 o = Matrix4x4.identity;
+            if (length != SizeMatrix4x4)
+            {
+                return o;
+            }
+
+            lock (memMatrix4x4)
+            {
+                inStream.Read(memMatrix4x4, 0, SizeMatrix4x4);
+                int index = 0;
+                Protocol.Deserialize(out o.m00, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m01, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m02, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m03, memMatrix4x4, ref index);
+
+                Protocol.Deserialize(out o.m10, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m11, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m12, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m13, memMatrix4x4, ref index);
+
+                Protocol.Deserialize(out o.m20, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m21, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m22, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m23, memMatrix4x4, ref index);
+
+                Protocol.Deserialize(out o.m30, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m31, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m32, memMatrix4x4, ref index);
+                Protocol.Deserialize(out o.m33, memMatrix4x4, ref index);
             }
 
             return o;

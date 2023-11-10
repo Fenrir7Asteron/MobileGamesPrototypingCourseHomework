@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 using EventSystem = UnityEngine.EventSystems.EventSystem;
+using Photon.Pun;
 
 namespace CW.Common
 {
@@ -470,10 +471,28 @@ namespace CW.Common
 	#if UNITY_EDITOR
 				if (Application.isPlaying == true)
 				{
+					// MonoBehaviourPun oPun = o as MonoBehaviourPun;
+					// if (oPun != null)
+					// {
+					// 	PhotonNetwork.Destroy(oPun.photonView);
+					// }
+					// else
+					// {
+					// 	Object.Destroy(o);
+					// }
 					Object.Destroy(o);
 				}
 				else
 				{
+					// MonoBehaviourPun oPun = o as MonoBehaviourPun;
+					// if (oPun != null)
+					// {
+					// 	PhotonNetwork.Destroy(oPun.photonView);
+					// }
+					// else
+					// {
+					// 	Object.DestroyImmediate(o);
+					// }
 					Object.DestroyImmediate(o);
 				}
 	#else

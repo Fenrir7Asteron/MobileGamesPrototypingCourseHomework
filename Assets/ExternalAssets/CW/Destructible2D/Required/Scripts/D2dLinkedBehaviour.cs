@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 namespace Destructible2D
 {
 	/// <summary>This class allows for quick registering and unregistering of class instances that can then be quickly looped through.</summary>
-	public abstract class D2dLinkedBehaviour<T> : MonoBehaviour
+	public abstract class D2dLinkedBehaviour<T> : MonoBehaviourPun
 		where T : D2dLinkedBehaviour<T>
 	{
 		[System.NonSerialized]

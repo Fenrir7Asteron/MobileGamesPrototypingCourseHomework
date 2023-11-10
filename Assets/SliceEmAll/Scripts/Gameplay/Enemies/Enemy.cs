@@ -22,9 +22,9 @@ namespace SliceEmAll.Gameplay.Enemy
             }
         }
 
-        public void SetLevelSwitcher(InSceneLevelSwitcher levelSwitcher)
+        public void Awake()
         {
-            _levelSwitcher = levelSwitcher;
+            _levelSwitcher = FindObjectOfType<InSceneLevelSwitcher>();
         }
 
         public void RespawnPlayer()

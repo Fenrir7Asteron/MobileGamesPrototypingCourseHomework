@@ -254,7 +254,6 @@ public class SpriteAnimator : MonoBehaviourPunCallbacks {
         if (targetPlayer == photonView.Owner && targetPlayer.CustomProperties.ContainsKey(CurrentAnimationNameKey))
         {
             string a_Name = (String) targetPlayer.CustomProperties[CurrentAnimationNameKey];
-            Debug.Log($"Network player anim: {a_Name}");
             StartAnimation(a_Name);
         }
     }

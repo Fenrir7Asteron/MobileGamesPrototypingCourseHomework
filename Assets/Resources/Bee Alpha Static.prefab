@@ -122,7 +122,7 @@ MonoBehaviour:
   solidRange: 0
   pixels: 0
   indestructible: 0
-  monitorPixels: 0
+  monitorPixels: 1
   ready: 1
   alphaData:
   - serializedVersion: 2
@@ -1682,8 +1682,6 @@ MonoBehaviour:
   alphaOffset: {x: -0.6142094, y: -0.51364475}
   alphaScale: {x: 1.2279774, y: 0.98778313}
   alphaSharpness: 4
-  useReplicatedGameObject: 1
-  replicatedPrefab: {fileID: 11400000, guid: 82b99723f705d8b41823d72017277d12, type: 2}
   shape: {fileID: 21300000, guid: a4f3e6a9ab63db445a0633c2e8aee5f0, type: 3}
   overrideTexture: {fileID: 0}
   solidRangeMask: {fileID: 0}

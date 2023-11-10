@@ -133,6 +133,7 @@ namespace Destructible2D
 
 		[System.NonSerialized]
 		private static List<int> modifiedPixels = new List<int>();
+		private static List<Color32> modifiedPixelsAlpha = new List<Color32>();
 
 		private static int _D2dAlpha     = Shader.PropertyToID("_D2dAlpha");
 		private static int _D2dScale     = Shader.PropertyToID("_D2dScale");
@@ -495,16 +496,7 @@ namespace Destructible2D
 			}
 			else
 			{
-				if (useReplicatedGameObject)
-				{
-					splitDestructible = PhotonNetwork.Instantiate(replicatedPrefab.gameObjectRef.name, transform.localPosition,
-						transform.localRotation).GetComponent<D2dDestructible>();
-				}
-				else
-				{
-					splitDestructible = Instantiate(this, transform.localPosition, transform.localRotation);
-				}
-
+				splitDestructible = Instantiate(this, transform.localPosition, transform.localRotation);
 				splitDestructible.transform.SetParent(transform.parent, false);
 			}
 
@@ -668,9 +660,6 @@ namespace Destructible2D
 		}
 
 		private static List<Material> tempMaterials = new List<Material>();
-        public bool useReplicatedGameObject;
-        public GameObjectSO replicatedPrefab;
-
 
         protected virtual void OnWillRenderObject(Renderer renderer)
 		{
@@ -845,15 +834,6 @@ namespace Destructible2D.Inspector
 			if (rebuild == true)
 			{
 				Each(tgts, t => t.RebuildAlphaTex(), true);
-			}
-
-			tgt.useReplicatedGameObject = EditorGUILayout.Toggle("Use Replicated GameObject", tgt.useReplicatedGameObject);
-			tgt.replicatedPrefab = (GameObjectSO) EditorGUILayout.ObjectField(tgt.replicatedPrefab, typeof(GameObjectSO), false);
-
-			if (GUI.changed)
-			{
-				EditorUtility.SetDirty(tgt);
-				EditorSceneManager.MarkSceneDirty(tgt.gameObject.scene);
 			}
 		}
 	}

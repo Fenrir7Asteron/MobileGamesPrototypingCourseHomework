@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using CW.Common;
+using Unity.VisualScripting;
 
 namespace Destructible2D
 {
@@ -63,6 +64,8 @@ namespace Destructible2D
 		private static readonly ushort[] triangles = { 0, 1, 2, 3, 2, 1 };
 
 		private static int _MainTex = Shader.PropertyToID("_MainTex");
+
+		private ExitGames.Client.Photon.Hashtable _myCustomProperties = new ExitGames.Client.Photon.Hashtable();
 
 		/// <summary>This gives you the attached SpriteRenderer.</summary>
 		public SpriteRenderer CachedSpriteRenderer
@@ -317,6 +320,9 @@ namespace Destructible2D
 				vertices[3] = new Vector2(r, t);
 
 				clonedSprite.OverrideGeometry(vertices, triangles);
+				//_myCustomProperties["ClonedSpriteVertices"] = vertices;
+				//_myCustomProperties["ClonedSpriteTriangles"] = triangles;
+				//photonView.Owner.SetCustomProperties(_myCustomProperties);
 			}
 		}
 

@@ -25,7 +25,6 @@ namespace SliceEmAll.Gameplay.Enemy
             _levelSwitcher.OnLevelStart -= Spawn;
 
             GameObject enemyObject = SpawnEnemy();
-            enemyObject.GetComponent<Enemy>().SetLevelSwitcher(_levelSwitcher);
 
             if (enemyObject.TryGetComponent<D2dWaypoints>(out D2dWaypoints d2DWaypoints))
             {

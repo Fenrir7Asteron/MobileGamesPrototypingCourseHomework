@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using CW.Common;
+using Photon.Pun;
 
 namespace Destructible2D
 {
@@ -76,6 +77,7 @@ namespace Destructible2D
 					alphaHalfPixelY = alphaPixelY * 0.5f;
 
 					modifiedPixels.Clear();
+					modifiedPixelsAlpha.Clear();
 
 					return true;
 				}
@@ -155,6 +157,17 @@ namespace Destructible2D
 		
 		public void Subtract(Matrix4x4 newMatrix, Texture2D newShape, Color newColor)
 		{
+			SubtractLocal(newMatrix, newShape, newColor);
+
+			if (monitorPixels == true && modifiedPixels.Count > 0)
+			{
+				photonView.RPC("RPC_Subtract", RpcTarget.Others, modifiedPixels.ToArray(),
+					modifiedPixelsAlpha.ToArray(), rect);
+			}
+		}
+
+		public void SubtractLocal(Matrix4x4 newMatrix, Texture2D newShape, Color newColor)
+		{
 			if (indestructible == false && BeginCommon(newMatrix, newShape, newColor) == true)
 			{
 				for (var y = rect.MinY; y < rect.MaxY; y++)
@@ -188,6 +201,40 @@ namespace Destructible2D
 					}
 				}
 
+				EndCommon();
+			}
+		}
+
+		[PunRPC]
+		public void RPC_Subtract(int[] pixelsIndices, Color32[] newColors, D2dRect modifiedRect)
+		{
+			if (indestructible == false)
+			{
+				for (int i = 0; i < pixelsIndices.Length; ++i)
+				{
+					int index = pixelsIndices[i];
+
+					if (alphaData.Length <= index)
+					{
+						continue;
+					}
+
+					var alphaNew = newColors[i];
+					var alphaOld   = alphaData[index].a;
+
+					if (alphaNew.a < alphaOld)
+					{
+						if (pixels == PixelsType.PixelatedBinary)
+						{
+							alphaNew.a = alphaNew.a > 127 ? (byte)255 : (byte)0;
+						}
+
+						alphaData[index] = alphaNew;
+					}	
+				}
+
+				rect = modifiedRect;
+				Debug.Log($"RPC_Subtract rect: {rect.MinX}/{rect.MaxX}/{rect.MinY}/{rect.MaxY}");
 				EndCommon();
 			}
 		}
@@ -285,6 +332,7 @@ namespace Destructible2D
 				if (binaryA != binaryB)
 				{
 					modifiedPixels.Add(index);
+					modifiedPixelsAlpha.Add(alphaNew);
 				}
 			}
 
