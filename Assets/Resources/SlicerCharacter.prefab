@@ -15041,6 +15041,9 @@ MonoBehaviour:
   Thrusters:
   - {fileID: 6211771691186274260}
   - {fileID: 3946339763646637487}
+  JumpCacheTime: 0.05
+  JumpVelocity: 20
+  ControlledCollider: {fileID: 11436916}
 --- !u!50 &1752885533
 Rigidbody2D:
   serializedVersion: 4

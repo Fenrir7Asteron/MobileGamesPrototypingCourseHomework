@@ -33,6 +33,11 @@ namespace Destructible2D.Examples
 
 		/// <summary>The main thrusters.</summary>
 		public D2dThruster[] Thrusters;
+		public float JumpCacheTime;
+
+		public float JumpVelocity;
+		public ControlledCollider ControlledCollider;
+
 
 		[System.NonSerialized]
 		private Rigidbody2D cachedRigidbody2D;
@@ -40,6 +45,9 @@ namespace Destructible2D.Examples
 		// Seconds until next shot is available
 		private float cooldown;
         private ButtonInput m_JumpInput;
+        private float m_LastJumpPressedTime;
+        private bool m_JumpInputIsCached;
+
 
         public void SetPlayerInput(PlayerInput a_PlayerInput)
 		{
@@ -61,50 +69,36 @@ namespace Destructible2D.Examples
 
 		}
 
-		protected virtual void Update()
+		protected virtual void FixedUpdate()
 		{
 			if (!photonView.IsMine)
 			{
 				return;
 			}
 
-			cooldown -= Time.deltaTime;
-
-			// Set thrusters based on finger drag
-			var deltaX      = TurnControls.GetValue(1.0f);
-			var deltaY      = MoveControls.GetValue(1.0f);
-			var targetSteer = Mathf.Clamp(deltaX, -1.0f, 1.0f);
-			var targetDrive = Mathf.Clamp(deltaY, -1.0f, 1.0f);
-
-			if (Thrusters != null)
-			{
-				for (var i = 0; i < Thrusters.Length; i++)
-				{
-					var thruster = Thrusters[i];
-
-					if (thruster != null)
-					{
-						thruster.Throttle = targetDrive;
-					}
-				}
-			}
-
-			cachedRigidbody2D.AddTorque(targetSteer * -TurnTorque);
-
-			// Jump the spaceship forward?
-			// foreach (var finger in CwInputManager.GetFingers(true))
-			// {
-			// 	if (JumpControls.WentDown(finger) == true)
-			// 	{
-			// 		DoJump();
-			// 	}
-			// }
+			cooldown -= Time.fixedDeltaTime;
 
 			if (m_JumpInput.m_WasJustPressed)
+            {
+                m_JumpInput.m_WasJustPressed = false;
+                m_LastJumpPressedTime = Time.fixedTime;
+                m_JumpInputIsCached = true;
+            }
+
+			if (m_JumpInputIsCached)
 			{
 				m_JumpInput.m_WasJustPressed = false;
 				DoJump();
 			}
+
+            if (m_JumpInputIsCached)
+            {
+                //Jump has not been started in time; jump cancelled
+                if (Time.fixedTime - m_LastJumpPressedTime >= JumpCacheTime)
+                {
+                    m_JumpInputIsCached = false;
+                }
+            }
 		}
 
 		private void DoJump()
@@ -113,6 +107,8 @@ namespace Destructible2D.Examples
 			{
 				return;
 			}
+
+			m_JumpInputIsCached = false;
 
 			cooldown = JumpDelay;
 
@@ -130,6 +126,9 @@ namespace Destructible2D.Examples
 
 				indicator.gameObject.SetActive(true);
 			}
+
+			// Set character vertical velocity
+			ControlledCollider.SetVelocity(new Vector2(ControlledCollider.GetVelocity().x, JumpVelocity));
 		}
 	}
 }
@@ -164,6 +163,10 @@ namespace Destructible2D.Examples
 			Separator();
 
 			Draw("Thrusters", "The main thrusters.");
+
+			Draw("JumpCacheTime", "Jump cache time");
+			Draw("JumpVelocity", "JumpVelocity");
+			Draw("ControlledCollider", "ControlledCollider");
 		}
 	}
 }

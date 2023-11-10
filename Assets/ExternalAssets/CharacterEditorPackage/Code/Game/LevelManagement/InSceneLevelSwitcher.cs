@@ -52,9 +52,8 @@ public class InSceneLevelSwitcher : MonoBehaviour {
 
     void Update()
     {
-        if (m_RespawnInput != null && m_RespawnInput.m_WasJustPressed)
+        if (m_RespawnInput != null && m_RespawnInput.m_IsPressed)
         {
-            m_RespawnInput.m_WasJustPressed = false;
             Respawn();
         }
     }
