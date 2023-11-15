@@ -46,7 +46,7 @@ namespace SliceEmAll.Networking.UI
             _playerViewsCreated.Clear();
 
             // Add new player views for the actual players in lobby
-            List<Photon.Realtime.Player> playersInLobby = instance.GetAllPlayersInLobby();
+            Player[] playersInLobby = PhotonNetwork.PlayerList;
             foreach (var player in playersInLobby)
             {
                 OnPlayerEnteredRoom(player);
@@ -57,6 +57,8 @@ namespace SliceEmAll.Networking.UI
 
         public void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
         {
+            Debug.Log($"Player id {newPlayer.UserId}, nickname {newPlayer.NickName} entered room");
+
             if (_playerViewsCreated.Any(x => x.GetUserID() == newPlayer.UserId))
             {
                 return;

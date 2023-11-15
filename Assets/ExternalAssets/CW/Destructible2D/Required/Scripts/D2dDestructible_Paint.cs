@@ -161,7 +161,7 @@ namespace Destructible2D
 
 			if (monitorPixels == true && modifiedPixels.Count > 0)
 			{
-				photonView.RPC("RPC_Subtract", RpcTarget.Others, modifiedPixels.ToArray(),
+				photonView.RPC("RPC_Subtract", RpcTarget.OthersBuffered, modifiedPixels.ToArray(),
 					modifiedPixelsAlpha.ToArray(), rect);
 			}
 		}
@@ -234,7 +234,6 @@ namespace Destructible2D
 				}
 
 				rect = modifiedRect;
-				Debug.Log($"RPC_Subtract rect: {rect.MinX}/{rect.MaxX}/{rect.MinY}/{rect.MaxY}");
 				EndCommon();
 			}
 		}

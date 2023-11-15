@@ -2902,7 +2902,7 @@ MonoBehaviour:
   - {fileID: 931649988}
   - {fileID: 211562440}
   - {fileID: 147914041}
-  m_ButtonSize: 100
+  m_ButtonSize: 0
   m_ButtonsPerRow: 5
   m_Camera: {fileID: 1154831979}
 --- !u!4 &122323220

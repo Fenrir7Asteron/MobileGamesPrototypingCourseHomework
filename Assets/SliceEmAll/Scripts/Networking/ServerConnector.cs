@@ -49,6 +49,7 @@ namespace SliceEmAll.Networking
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.BroadcastPropsChangeToAll = true;
             roomOptions.MaxPlayers = 4;
+            roomOptions.PublishUserId = true;
             PhotonNetwork.JoinOrCreateRoom("basic", roomOptions, TypedLobby.Default);
         }
 
