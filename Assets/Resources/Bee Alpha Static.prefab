@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 2801620822463250036}
   - component: {fileID: 4601792787301885347}
   - component: {fileID: 5261613617052783934}
+  - component: {fileID: 3596144144892017889}
   m_Layer: 0
   m_Name: Bee Alpha Static
   m_TagString: Untagged
@@ -2085,6 +2086,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3596144144892017889}
+        m_TargetAssemblyTypeName: SliceEmAll.Gameplay.LevelObjects.DeadlyObstacle,
+          Assembly-CSharp
+        m_MethodName: RecordPlayerDeath
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   cooldown: 0
 --- !u!114 &8524216293353448827
 MonoBehaviour:
@@ -2166,6 +2180,18 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &3596144144892017889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8524216293353448814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c34c198d84d4960439f5ea57b5abc81f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8524216293383432987
 GameObject:
   m_ObjectHideFlags: 0

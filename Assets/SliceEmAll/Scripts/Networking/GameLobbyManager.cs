@@ -1,6 +1,8 @@
 using System;
 using Destructible2D.Examples;
+using GameAnalyticsSDK;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SliceEmAll.Networking
 {
@@ -38,6 +40,8 @@ namespace SliceEmAll.Networking
             playerObject.GetComponent<D2dSpaceshipJumper>().SetPlayerInput(playerInput);
 
             SpawnGameplayHud(playerInput);
+
+            GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, SceneManager.GetActiveScene().name);
         }
 
         private void SpawnGameplayHud(PlayerInput playerInput)

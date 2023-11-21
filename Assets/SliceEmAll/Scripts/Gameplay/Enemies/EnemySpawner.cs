@@ -34,7 +34,9 @@ namespace SliceEmAll.Gameplay.Enemy
 
         public GameObject SpawnEnemy()
         {
-            return PhotonNetwork.Instantiate(_enemyPrefab.name, transform.position, transform.rotation);
+            GameObject enemyObject = PhotonNetwork.Instantiate(_enemyPrefab.name, transform.position, transform.rotation);
+            enemyObject.name = gameObject.name;
+            return enemyObject;
         }
     }
 }
