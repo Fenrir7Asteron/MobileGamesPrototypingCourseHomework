@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/SliceEmAll/Scenes/GameStartup.unity
     guid: 3bff6a80d50037f46ba03f0f3624e58e
   - enabled: 1
-    path: Assets/SliceEmAll/Scenes/PrototypeLevel.unity
+    path: Assets/SliceEmAll/Scenes/Level01.unity
     guid: 5097255fd7dedec438438f4832bcdb1e
   m_configObjects: {}

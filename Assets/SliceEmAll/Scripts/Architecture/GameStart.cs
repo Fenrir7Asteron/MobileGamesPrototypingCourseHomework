@@ -1,3 +1,4 @@
+using GameAnalyticsSDK;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +15,8 @@ namespace SliceEmAll.Architecture
             _connector.Init();
             _connector.ConnectToServer();
             DontDestroyOnLoad(networkManager);
+
+            GameAnalytics.Initialize();
 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         } 
